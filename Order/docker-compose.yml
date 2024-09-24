@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  alb_order:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: alb_order
