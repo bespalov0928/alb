@@ -16,7 +16,16 @@
 
     <properties>
         <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <docker.db.url.jdbc>jdbc:postgresql://127.0.0.1:5432/db_alb</docker.db.url.jdbc>
+        <docker.db.username.jdbc>postgres</docker.db.username.jdbc>
+        <docker.db.password.jdbc>password</docker.db.password.jdbc>
+        <liquibase.changeLogFile>db/dbchangelog.xml</liquibase.changeLogFile>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -87,6 +96,27 @@
                     <mainClass>ru.work.store.StoreApplication</mainClass>
                     <layout>JAR</layout>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.15.0</version>
+                <configuration>
+                    <changeLogFile>${liquibase.changeLogFile}</changeLogFile>
+                    <url>${docker.db.url.jdbc}</url>
+                    <username>${docker.db.username.jdbc}</username>
+                    <password>${docker.db.password.jdbc}</password>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>clearCheckSums</goal>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
