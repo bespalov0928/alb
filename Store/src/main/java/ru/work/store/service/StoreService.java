@@ -15,5 +15,6 @@ public class StoreService {
      @KafkaListener(topics = "order", groupId = "app.1")
     public void acceptOrder(Order order) {
         storeRepository.save(order);
+         System.out.println(order);
     }
 }
